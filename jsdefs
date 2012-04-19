@@ -1,0 +1,13 @@
+#!/usr/bin/python
+# -*- mode:python -*-
+import sys
+import re
+
+re_id = r'(^\s*(?P<fun>[_A-Za-z][_A-Za-z1-9]*): function)|(^\s*Ext.define\(.*\.(?P<class>[_A-Za-z][_A-Za-z1-9]*))'
+
+with open(sys.argv[1], 'r') as file_in:
+    for line_no, line in enumerate(file_in.readlines(), start=1):
+        match_result = re.match(re_id, line)
+        if match_result:
+            match = match_result.group('fun') or match_result.group('class')
+            print('%s\t%s\t%s' % (match, sys.argv[1], line_no))
